@@ -69,6 +69,7 @@ import pandas as pd
 import geopandas as gpd
 import shapely
 import os
+import matplotlib.pyplot as plt
 os.chdir("/Users/samarnegahdar/Desktop/untitled folder/problem-set-4-summer-jenny")
 pos2016 = pd.read_csv("pos2016.csv")
 print(pos2016.head(10))
@@ -435,12 +436,7 @@ print(sorted_properly_closed_hospitals)
     a.
 
 ```{python}
-import os
-import geopandas as gpd
-
 # Set environment variable to attempt SHX file restoration
-co
-
 shapefile_path = "/Users/samarnegahdar/Desktop/untitled folder/problem-set-4-summer-jenny/gz_2010_us_860_00_500k.shp"
 
 try:
@@ -448,9 +444,40 @@ try:
     print("Shapefile loaded successfully with SHX restoration.")
 except Exception as e:
     print("Error loading shapefile:", e)
+print(zip_shapes.columns)
+zip_shapes = gpd.read_file("/Users/samarnegahdar/Desktop/untitled folder/problem-set-4-summer-jenny/gz_2010_us_860_00_500k")
+print(zip_shapes.head())
+print(zip_shapes.columns)
 ```
 
     b. 
+
+```{python}
+# Step 2: Filter for Texas ZIP codes (starting with 75, 76, 77, 78, or 79)
+texas_zip_shapes = zip_shapes[zip_shapes['ZCTA5CE10'].str.startswith(('75', '76', '77', '78', '79'))]
+
+# Step 3: Load the 2016 POS dataset and filter for Texas hospitals
+# Assuming `all_years_data` is a DataFrame containing the cleaned POS data
+pos2016 = all_years_data[(all_years_data['YEAR'] == 2016)]
+
+# Calculate the number of hospitals per ZIP code in Texas for 2016
+hospitals_per_zip = pos2016['ZIP_CD'].value_counts().reset_index()
+hospitals_per_zip.columns = ['ZIP_CD', 'hospital_count']
+
+# Step 4: Merge the hospital counts with the Texas ZIP code shapefile
+# Ensure ZIP code columns are strings for consistent merging
+texas_zip_shapes['ZCTA5CE10'] = texas_zip_shapes['ZCTA5CE10'].astype(str)
+hospitals_per_zip['ZIP_CD'] = hospitals_per_zip['ZIP_CD'].astype(str)
+texas_zip_shapes = texas_zip_shapes.merge(hospitals_per_zip, left_on='ZCTA5CE10', right_on='ZIP_CD', how='left')
+
+# Step 5: Plot the choropleth map
+fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+texas_zip_shapes.plot(column='hospital_count', cmap='Blues', linewidth=0.8, ax=ax, edgecolor='0.8', legend=True)
+ax.set_title("Number of Hospitals per ZIP Code in Texas (2016)")
+ax.set_axis_off()
+plt.show()
+```
+
 2. 
 
 ## Calculate zip code’s distance to the nearest hospital (20 pts) (*)
