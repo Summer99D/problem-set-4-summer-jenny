@@ -72,7 +72,7 @@
         "\n",
         "2. "
       ],
-      "id": "c228f0d3"
+      "id": "b9ac1c60"
     },
     {
       "cell_type": "code",
@@ -82,11 +82,12 @@
         "import geopandas as gpd\n",
         "import shapely\n",
         "import os\n",
+        "import matplotlib.pyplot as plt\n",
         "os.chdir(\"/Users/samarnegahdar/Desktop/untitled folder/problem-set-4-summer-jenny\")\n",
         "pos2016 = pd.read_csv(\"pos2016.csv\")\n",
         "print(pos2016.head(10))"
       ],
-      "id": "bc0ef4b5",
+      "id": "fc707a14",
       "execution_count": null,
       "outputs": []
     },
@@ -100,7 +101,7 @@
         "pos2016['PRVDR_CTGRY_CD'] = pos2016['PRVDR_CTGRY_CD'].astype(str).str.zfill(2)\n",
         "pos2016.head()"
       ],
-      "id": "efafad43",
+      "id": "f1231f1b",
       "execution_count": null,
       "outputs": []
     },
@@ -113,7 +114,7 @@
         "print(st_hospitals2016.head())\n",
         "st_hospitals2016.shape"
       ],
-      "id": "98411673",
+      "id": "652d7092",
       "execution_count": null,
       "outputs": []
     },
@@ -126,7 +127,7 @@
         "\n",
         "adding the year 2016"
       ],
-      "id": "da0e8fb4"
+      "id": "a0e26133"
     },
     {
       "cell_type": "code",
@@ -135,7 +136,7 @@
         "st_hospitals2016.loc[:, 'YEAR'] = 2016\n",
         "print(st_hospitals2016)"
       ],
-      "id": "d0abb35d",
+      "id": "7a1c881e",
       "execution_count": null,
       "outputs": []
     },
@@ -146,7 +147,7 @@
         "3. \n",
         "for 2017: "
       ],
-      "id": "86db58e0"
+      "id": "a10ca9b4"
     },
     {
       "cell_type": "code",
@@ -155,7 +156,7 @@
         "#importing pos2017\n",
         "pos2017 = pd.read_csv(\"pos2017.csv\", encoding='latin1')"
       ],
-      "id": "5c8a8138",
+      "id": "603c3171",
       "execution_count": null,
       "outputs": []
     },
@@ -169,7 +170,7 @@
         "pos2017['PRVDR_CTGRY_CD'] = pos2017['PRVDR_CTGRY_CD'].astype(str).str.zfill(2) ##filling numbers with a zero before integer\n",
         "pos2017.head()"
       ],
-      "id": "b96a2f86",
+      "id": "9137c053",
       "execution_count": null,
       "outputs": []
     },
@@ -184,7 +185,7 @@
         "print(st_hospitals2017.tail())\n",
         "st_hospitals2017.shape"
       ],
-      "id": "c748dc35",
+      "id": "d562a120",
       "execution_count": null,
       "outputs": []
     },
@@ -194,7 +195,7 @@
       "source": [
         "Adding the 2017 column "
       ],
-      "id": "2c82632d"
+      "id": "9753a65b"
     },
     {
       "cell_type": "code",
@@ -204,7 +205,7 @@
         "\n",
         "print(st_hospitals2017)"
       ],
-      "id": "9b3f73b2",
+      "id": "d6f38b14",
       "execution_count": null,
       "outputs": []
     },
@@ -214,7 +215,7 @@
       "source": [
         "for 2018: "
       ],
-      "id": "9a8d243a"
+      "id": "37024df9"
     },
     {
       "cell_type": "code",
@@ -223,7 +224,7 @@
         "#importing pos2018\n",
         "pos2018 = pd.read_csv('pos2018.csv', encoding='latin1')"
       ],
-      "id": "103770a9",
+      "id": "ac928027",
       "execution_count": null,
       "outputs": []
     },
@@ -237,7 +238,7 @@
         "pos2018['PRVDR_CTGRY_CD'] = pos2018['PRVDR_CTGRY_CD'].astype(str).str.zfill(2)\n",
         "pos2018.head()"
       ],
-      "id": "45d6639e",
+      "id": "99621f1d",
       "execution_count": null,
       "outputs": []
     },
@@ -252,7 +253,7 @@
         "print(st_hospitals2018.tail())\n",
         "st_hospitals2018.shape"
       ],
-      "id": "4f560428",
+      "id": "a3dc05b1",
       "execution_count": null,
       "outputs": []
     },
@@ -262,7 +263,7 @@
       "source": [
         "Adding the 2018 column "
       ],
-      "id": "f5627f09"
+      "id": "4a254bdd"
     },
     {
       "cell_type": "code",
@@ -273,7 +274,7 @@
         "\n",
         "print(st_hospitals2018)"
       ],
-      "id": "112ab89f",
+      "id": "3242eff0",
       "execution_count": null,
       "outputs": []
     },
@@ -283,7 +284,7 @@
       "source": [
         "for 2019: "
       ],
-      "id": "bebb4e7b"
+      "id": "f3f6f0c6"
     },
     {
       "cell_type": "code",
@@ -292,7 +293,7 @@
         "#importing pos2019\n",
         "pos2019 = pd.read_csv('pos2019.csv', encoding='latin1')"
       ],
-      "id": "5990cc1f",
+      "id": "7518f938",
       "execution_count": null,
       "outputs": []
     },
@@ -306,7 +307,7 @@
         "pos2019['PRVDR_CTGRY_CD'] = pos2019['PRVDR_CTGRY_CD'].astype(str).str.zfill(2)\n",
         "pos2019.head()"
       ],
-      "id": "bab6977d",
+      "id": "67162b6d",
       "execution_count": null,
       "outputs": []
     },
@@ -321,7 +322,7 @@
         "print(st_hospitals2019.tail())\n",
         "st_hospitals2019.shape"
       ],
-      "id": "92e75808",
+      "id": "c03791d6",
       "execution_count": null,
       "outputs": []
     },
@@ -331,7 +332,7 @@
       "source": [
         "Adding the 2019 column "
       ],
-      "id": "4dc4c1a5"
+      "id": "963c6933"
     },
     {
       "cell_type": "code",
@@ -341,7 +342,7 @@
         "\n",
         "print(st_hospitals2019.head(5))"
       ],
-      "id": "f5855272",
+      "id": "1adf84d8",
       "execution_count": null,
       "outputs": []
     },
@@ -351,7 +352,7 @@
       "source": [
         "**Appending them together**"
       ],
-      "id": "8306837a"
+      "id": "b7f04713"
     },
     {
       "cell_type": "code",
@@ -361,7 +362,7 @@
         "\n",
         "print(all_years_data.head())"
       ],
-      "id": "8fae9026",
+      "id": "fce53f85",
       "execution_count": null,
       "outputs": []
     },
@@ -370,19 +371,22 @@
       "metadata": {},
       "source": [
         "4. \n",
-        "    a."
+        "    a.\n",
+        "   \n",
+        "    b. \n",
+        "\n",
+        "## Identify hospital closures in POS file (15 pts) (*)\n"
       ],
-      "id": "567584ae"
+      "id": "c63aa31a"
     },
     {
       "cell_type": "code",
-      "metadata": {
-        "md-indent": "    "
-      },
+      "metadata": {},
       "source": [
-        "#we will be plotting all unique hospitals"
+        "unique_termination_codes = all_years_data['PGM_TRMNTN_CD'].unique()\n",
+        "print(unique_termination_codes)"
       ],
-      "id": "7b91f37e",
+      "id": "2eb7392c",
       "execution_count": null,
       "outputs": []
     },
@@ -390,43 +394,72 @@
       "cell_type": "markdown",
       "metadata": {},
       "source": [
-        "    b. \n",
-        "\n",
-        "## Identify hospital closures in POS file (15 pts) (*)\n",
-        "\n",
         "1. \n"
       ],
-      "id": "7ffc22e5"
+      "id": "4bf0762b"
     },
     {
       "cell_type": "code",
       "metadata": {},
       "source": [
+        "# Ensure PGM_TRMNTN_CD is treated as a string\n",
+        "all_years_data['PGM_TRMNTN_CD'] = all_years_data['PGM_TRMNTN_CD'].astype(str)\n",
+        "\n",
+        "# Fill missing values in the PGM_TRMNTN_CD column with '1'\n",
+        "all_years_data['PGM_TRMNTN_CD'] = all_years_data['PGM_TRMNTN_CD'].fillna('1')\n",
+        "\n",
+        "# Verify that missing values have been filled\n",
+        "print(\"Check for missing values in PGM_TRMNTN_CD column after filling:\")\n",
+        "print(all_years_data['PGM_TRMNTN_CD'].isnull().sum())  # Should output 0 if no missing values remain\n",
+        "\n",
         "# List to store suspected closures\n",
         "suspected_closures = []\n",
         "\n",
         "# Filter for hospitals that were active in 2016\n",
-        "active_2016 = all_years_data[(all_years_data['YEAR'] == 2016) & (all_years_data['PGM_TRMNTN_CD'] == 0)]\n",
+        "active_2016 = all_years_data[(all_years_data['YEAR'] == 2016) & (all_years_data['PGM_TRMNTN_CD'] == '0')]\n",
         "\n",
         "# Loop through each hospital active in 2016\n",
         "for _, hospital in active_2016.iterrows():\n",
         "    facility_name = hospital['FAC_NAME']\n",
         "    zip_code = hospital['ZIP_CD']\n",
         "    \n",
-        "    # Check if the hospital is closed in 2019 with specific closure codes (1, 2, 3, or 4)\n",
+        "    # Check if the hospital is closed in 2019 with any termination code from ['01', '02', '03', '04']\n",
         "    closed_2019 = all_years_data[\n",
         "        (all_years_data['FAC_NAME'] == facility_name) &\n",
         "        (all_years_data['ZIP_CD'] == zip_code) &\n",
         "        (all_years_data['YEAR'] == 2019) &\n",
-        "        (all_years_data['PGM_TRMNTN_CD'].isin([1, 2, 3, 4]))\n",
+        "        (all_years_data['PGM_TRMNTN_CD'].isin(['1', '2', '3', '4']))\n",
         "    ]\n",
         "    \n",
-        "    # If the hospital is closed in 2019, add it to the suspected closures\n",
+        "    # Retrieve termination codes for 2018 and 2017\n",
+        "    termination_code_2018 = all_years_data[\n",
+        "        (all_years_data['FAC_NAME'] == facility_name) &\n",
+        "        (all_years_data['ZIP_CD'] == zip_code) &\n",
+        "        (all_years_data['YEAR'] == 2018)\n",
+        "    ]['PGM_TRMNTN_CD'].iloc[0] if not all_years_data[\n",
+        "        (all_years_data['FAC_NAME'] == facility_name) &\n",
+        "        (all_years_data['ZIP_CD'] == zip_code) &\n",
+        "        (all_years_data['YEAR'] == 2018)\n",
+        "    ].empty else None\n",
+        "\n",
+        "    termination_code_2017 = all_years_data[\n",
+        "        (all_years_data['FAC_NAME'] == facility_name) &\n",
+        "        (all_years_data['ZIP_CD'] == zip_code) &\n",
+        "        (all_years_data['YEAR'] == 2017)\n",
+        "    ]['PGM_TRMNTN_CD'].iloc[0] if not all_years_data[\n",
+        "        (all_years_data['FAC_NAME'] == facility_name) &\n",
+        "        (all_years_data['ZIP_CD'] == zip_code) &\n",
+        "        (all_years_data['YEAR'] == 2017)\n",
+        "    ].empty else None\n",
+        "    \n",
+        "    # If the hospital is closed in 2019, add it to the suspected closures with 2018 and 2017 termination codes\n",
         "    if not closed_2019.empty:\n",
         "        suspected_closures.append({\n",
         "            'FAC_NAME': facility_name,\n",
         "            'ZIP_CD': zip_code,\n",
-        "            'year_of_closure': 2019\n",
+        "            'year_of_closure': 2019,\n",
+        "            'PGM_TRMNTN_CD_2018': termination_code_2018,\n",
+        "            'PGM_TRMNTN_CD_2017': termination_code_2017\n",
         "        })\n",
         "\n",
         "# Convert to DataFrame and remove duplicates to ensure unique hospitals\n",
@@ -434,10 +467,9 @@
         "\n",
         "# Display the count of unique suspected closures\n",
         "num_unique_suspected_closures = len(suspected_closures_df)\n",
-        "print(f\"Number of unique hospitals suspected to have closed by 2019: {num_unique_suspected_closures}\")\n",
-        "print(suspected_closures_df)"
+        "print(f\"Number of unique hospitals suspected to have closed by 2019: {num_unique_suspected_closures}\")"
       ],
-      "id": "86995de4",
+      "id": "fe80b2c2",
       "execution_count": null,
       "outputs": []
     },
@@ -447,7 +479,7 @@
       "source": [
         "2. \n"
       ],
-      "id": "9648d644"
+      "id": "c2ba3282"
     },
     {
       "cell_type": "code",
@@ -455,7 +487,7 @@
       "source": [
         "print(suspected_closures_df.head(10))"
       ],
-      "id": "93698458",
+      "id": "6f649a87",
       "execution_count": null,
       "outputs": []
     },
@@ -466,50 +498,78 @@
         "3. \n",
         "    a.\n"
       ],
-      "id": "15cd24d6"
+      "id": "022e6d8e"
     },
     {
       "cell_type": "code",
       "metadata": {},
       "source": [
-        "# Pivot the data to have separate columns for termination codes for each year\n",
-        "termination_pivot = suspected_closures_df.pivot(index=['FAC_NAME', 'ZIP_CD'], columns='YEAR', values='PGM_TRMNTN_CD').reset_index()\n",
+        "# Lists to store final classifications\n",
+        "properly_closed_hospitals = []\n",
+        "merge_hospitals = []\n",
         "\n",
-        "# Rename the columns to make it clearer\n",
-        "termination_pivot.columns = ['FAC_NAME', 'ZIP_CD', 'PGM_TRMNTN_CD_2017', 'PGM_TRMNTN_CD_2018', 'PGM_TRMNTN_CD_2019']\n",
+        "# Iterate over each hospital in suspected_closures_df\n",
+        "for _, hospital in suspected_closures_df.iterrows():\n",
+        "    facility_name = hospital['FAC_NAME']\n",
+        "    zip_code = hospital['ZIP_CD']\n",
+        "    termination_code_2018 = hospital['PGM_TRMNTN_CD_2018']\n",
+        "    termination_code_2017 = hospital['PGM_TRMNTN_CD_2017']\n",
+        "    \n",
+        "    # Step 1: Check the 2018 termination code\n",
+        "    if termination_code_2018 != '0':\n",
+        "        # If 2018 termination code is not 0, classify as properly closed\n",
+        "        properly_closed_hospitals.append({\n",
+        "            'FAC_NAME': facility_name,\n",
+        "            'ZIP_CD': zip_code,\n",
+        "            'PGM_TRMNTN_CD_2018': termination_code_2018,\n",
+        "            'PGM_TRMNTN_CD_2017': termination_code_2017\n",
+        "        })\n",
+        "    else:\n",
+        "        # Step 2: Check the 2017 termination code if 2018 is 0.0\n",
+        "        if termination_code_2017 == '0':\n",
+        "            # If 2017 is also 0, classify as properly closed\n",
+        "            properly_closed_hospitals.append({\n",
+        "                'FAC_NAME': facility_name,\n",
+        "                'ZIP_CD': zip_code,\n",
+        "                'PGM_TRMNTN_CD_2018': termination_code_2018,\n",
+        "                'PGM_TRMNTN_CD_2017': termination_code_2017\n",
+        "            })\n",
+        "        else:\n",
+        "            # Otherwise, classify as a potential merger\n",
+        "            merge_hospitals.append({\n",
+        "                'FAC_NAME': facility_name,\n",
+        "                'ZIP_CD': zip_code,\n",
+        "                'PGM_TRMNTN_CD_2018': termination_code_2018,\n",
+        "                'PGM_TRMNTN_CD_2017': termination_code_2017\n",
+        "            })\n",
         "\n",
-        "# Filter for hospitals where termination codes for 2017 and 2019 are not the same as 2018\n",
-        "hospitals_different_termination = termination_pivot[\n",
-        "    (termination_pivot['PGM_TRMNTN_CD_2018'] != termination_pivot['PGM_TRMNTN_CD_2017']) &\n",
-        "    (termination_pivot['PGM_TRMNTN_CD_2018'] != termination_pivot['PGM_TRMNTN_CD_2019'])\n",
-        "]\n",
+        "# Convert results to DataFrames for inspection\n",
+        "properly_closed_hospitals_df = pd.DataFrame(properly_closed_hospitals)\n",
+        "merge_hospitals_df = pd.DataFrame(merge_hospitals)\n",
         "\n",
-        "# Display the results\n",
-        "print(\"Hospitals where termination code for 2017 and 2019 is different from 2018:\")\n",
-        "print(hospitals_different_termination)"
+        "# Display results\n",
+        "print(\"Properly closed hospitals:\")\n",
+        "print(properly_closed_hospitals_df)\n",
+        "\n",
+        "print(\"\\nHospitals suspected of merger:\")\n",
+        "print(merge_hospitals_df)\n",
+        "\n",
+        "# Number of properly closed hospitals\n",
+        "num_properly_closed = properly_closed_hospitals_df.shape['0']\n",
+        "print(f\"Number of properly closed hospitals: {num_properly_closed}\")\n",
+        "\n",
+        "# Number of suspected mergers\n",
+        "num_suspected_mergers = merge_hospitals_df.shape['0']\n",
+        "print(f\"Number of suspected mergers: {num_suspected_mergers}\")"
       ],
-      "id": "ae5bce90",
+      "id": "292ca3bf",
       "execution_count": null,
       "outputs": []
     },
     {
-      "cell_type": "markdown",
-      "metadata": {},
-      "source": [
-        "# Display the results\n",
-        "print(\"Hospitals where termination code for 2017 and 2019 is different from 2018:\")\n",
-        "print(hospitals_different_termination)\n",
-        "    ```\n"
-      ],
-      "id": "31533461"
-    },
-    {
       "cell_type": "code",
       "metadata": {},
       "source": [
-        "# Ensure PGM_TRMNTN_CD is integer across all years for consistent comparison\n",
-        "all_years_data['PGM_TRMNTN_CD'] = pd.to_numeric(all_years_data['PGM_TRMNTN_CD'], errors='coerce').fillna(0).astype(int)\n",
-        "\n",
         "# Initialize lists to store properly closed hospitals and suspected mergers\n",
         "properly_closed_hospitals = []\n",
         "merge_hospitals = []\n",
@@ -526,22 +586,22 @@
         "        (all_years_data['YEAR'].isin([2017, 2018]))\n",
         "    ]\n",
         "\n",
-        "    # Get the termination codes for 2018 and 2017, defaulting to 0 if the year is missing\n",
-        "    termination_2018 = hospital_data[hospital_data['YEAR'] == 2018]['PGM_TRMNTN_CD'].iloc[0] if not hospital_data[hospital_data['YEAR'] == 2018].empty else 0\n",
-        "    termination_2017 = hospital_data[hospital_data['YEAR'] == 2017]['PGM_TRMNTN_CD'].iloc[0] if not hospital_data[hospital_data['YEAR'] == 2017].empty else 0\n",
+        "    # Get the termination codes for 2018 and 2017, defaulting to \"1\" if the year is missing\n",
+        "    termination_2018 = hospital_data[hospital_data['YEAR'] == 2018]['PGM_TRMNTN_CD'].iloc[0] if not hospital_data[hospital_data['YEAR'] == 2018].empty else '1'\n",
+        "    termination_2017 = hospital_data[hospital_data['YEAR'] == 2017]['PGM_TRMNTN_CD'].iloc[0] if not hospital_data[hospital_data['YEAR'] == 2017].empty else '1'\n",
         "\n",
         "    # Classification logic as per the description\n",
-        "    if termination_2018 != 0:\n",
-        "        # Properly closed if terminated in 2018 (code other than 0)\n",
+        "    if termination_2018 != '0':\n",
+        "        # Properly closed if terminated in 2018 (code other than \"0\")\n",
         "        properly_closed_hospitals.append({\n",
         "            'FAC_NAME': facility_name,\n",
         "            'ZIP_CD': zip_code,\n",
         "            'PGM_TRMNTN_CD_2017': termination_2017,\n",
         "            'PGM_TRMNTN_CD_2018': termination_2018\n",
         "        })\n",
-        "    elif termination_2018 == 0:\n",
+        "    elif termination_2018 == '0':\n",
         "        # If active in 2018, check 2017 status\n",
-        "        if termination_2017 == 0:\n",
+        "        if termination_2017 == '0':\n",
         "            # Properly closed if also active in 2017\n",
         "            properly_closed_hospitals.append({\n",
         "                'FAC_NAME': facility_name,\n",
@@ -561,14 +621,6 @@
         "# Convert results to DataFrames for inspection\n",
         "properly_closed_hospitals_df = pd.DataFrame(properly_closed_hospitals)\n",
         "merge_hospitals_df = pd.DataFrame(merge_hospitals)\n",
-        "\n",
-        "# Display results\n",
-        "print(\"Properly closed hospitals:\")\n",
-        "print(properly_closed_hospitals_df)\n",
-        "\n",
-        "print(\"\\nHospitals suspected of merger:\")\n",
-        "print(merge_hospitals_df)\n",
-        "\n",
         "# Number of properly closed hospitals\n",
         "num_properly_closed = properly_closed_hospitals_df.shape[0]\n",
         "print(f\"Number of properly closed hospitals: {num_properly_closed}\")\n",
@@ -577,7 +629,7 @@
         "num_suspected_mergers = merge_hospitals_df.shape[0]\n",
         "print(f\"Number of suspected mergers: {num_suspected_mergers}\")"
       ],
-      "id": "4f232db1",
+      "id": "8527440c",
       "execution_count": null,
       "outputs": []
     },
@@ -585,20 +637,138 @@
       "cell_type": "markdown",
       "metadata": {},
       "source": [
-        "    b.\n",
-        "    c.\n",
+        "There are no potential merged hospitals!\n",
+        "\n",
+        "\n",
+        "    a. there are no merged hospitals!\n",
+        "    b.\n"
+      ],
+      "id": "668f7399"
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "    # Sort the properly closed hospitals by FAC_NAME and display the first 10 rows\n",
+        "sorted_properly_closed_hospitals = properly_closed_hospitals_df.sort_values(by='FAC_NAME').head(10)\n",
+        "\n",
+        "# Display the sorted list\n",
+        "print(\"First 10 corrected hospital closures sorted by name:\")\n",
+        "print(sorted_properly_closed_hospitals)\n",
+        "```\n",
+        "\n",
         "\n",
         "## Download Census zip code shapefile (10 pt) \n",
         "\n",
         "1. \n",
-        "    a.\n",
-        "    b. \n",
+        "\n",
+        "\n",
+        "```{python}\n",
+        "import geopandas as gpd\n",
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "\n",
+        "# Load shapefile and display available columns\n",
+        "shapefile_path = \"/Users/samarnegahdar/Desktop/untitled folder/problem-set-4-summer-jenny/gz_2010_us_860_00_500k.shp\"\n",
+        "\n",
+        "try:\n",
+        "    zip_shapes = gpd.read_file(shapefile_path)\n",
+        "    print(\"Shapefile loaded successfully.\")\n",
+        "    print(\"Columns in shapefile:\", zip_shapes.columns)\n",
+        "except Exception as e:\n",
+        "    print(\"Error loading shapefile:\", e)\n",
+        "\n",
+        "# Ensure column names and check if 'ZCTA5CE10' exists or an equivalent column\n",
+        "if 'ZCTA5CE10' in zip_shapes.columns:\n",
+        "    zip_column = 'ZCTA5CE10'\n",
+        "elif 'ZCTA5' in zip_shapes.columns:\n",
+        "    zip_column = 'ZCTA5'\n",
+        "else:\n",
+        "    print(\"ZIP code column not found. Available columns:\", zip_shapes.columns)\n",
+        "\n",
+        "# Step 2: Filter for Texas ZIP codes (starting with 75, 76, 77, 78, or 79)\n",
+        "texas_zip_shapes = zip_shapes[zip_shapes[zip_column].astype(str).str.startswith(('75', '76', '77', '78', '79'))]\n",
+        "print(texas_zip_shapes.head(10))\n",
+        "\n",
+        "```\n",
+        "\n",
+        "\n",
         "2. \n",
+        "\n",
+        "\n",
+        "```{python}\n",
+        "\n",
+        "```\n",
+        "\n",
         "\n",
         "## Calculate zip code’s distance to the nearest hospital (20 pts) (*)\n",
         "\n",
         "1. \n",
+        "\n",
+        "\n",
+        "```{python}\n",
+        "#I will start by creating centeroids:\n",
+        "zip_shapes['centroids']= zip_shapes.geometry.centroid\n",
+        "#this will change the default geometry to centroids\n",
+        "all_zip_centroid= zip_shapes.copy().set_geometry('centroids')\n",
+        "print(all_zip_centroid.shape)\n",
+        "print(all_zip_centroid.columns)\n",
+        "print(all_zip_centroid.head(10))\n",
+        "```\n",
+        "\n",
+        "\n",
+        "GEO_ID: it is ta code to identify the grographic type: state, county, zipcode\n",
+        "\n",
+        "ZCTA5:it is 5 digit zip code tabulation area( zpproximation of postal codes)\n",
+        "\n",
+        "NAME: is the same as ZCTA5 only more user friendly. \n",
+        "\n",
+        "LSDA: legal/statistical area description categorizing geo area type( state, county,zipcode(in this case our description is zip code ZCTA5))\n",
+        "\n",
+        "CENSUSAREA:The land area of the ZCTA in square miles as calculated by the Census Bureau. It measures the physical size of each area, excluding water bodies.\n",
+        "\n",
+        "\n",
         "2. \n",
+        "\n",
+        "```{python}\n",
+        "from shapely.ops import unary_union\n",
+        "\n",
+        "# Step 1: Filter for Texas ZIP codes (starting with 75, 76, 77, 78, or 79)\n",
+        "zips_texas_centroids = all_zip_centroid[all_zip_centroid['ZCTA5'].str.startswith(('75', '76', '77', '78', '79'))]\n",
+        "\n",
+        "# Step 2: Filter for Texas and bordering states’ ZIP codes\n",
+        "zips_texas_borderstates_centroids = all_zip_centroid[all_zip_centroid['ZCTA5'].str.startswith(\n",
+        "    ('75', '76', '77', '78', '79', '70', '71', '72', '73', '74', '80', '81', '88', '87', '86')\n",
+        ")]\n",
+        "\n",
+        "# Step 3: Count unique ZIP codes in each subset\n",
+        "num_texas_zips = zips_texas_centroids['ZCTA5'].nunique()\n",
+        "num_bordering_zips = zips_texas_borderstates_centroids['ZCTA5'].nunique()\n",
+        "\n",
+        "print(f\"Number of unique Texas ZIP codes: {num_texas_zips}\")\n",
+        "print(f\"Number of unique ZIP codes in Texas and bordering states: {num_bordering_zips}\")\n",
+        "\n",
+        "# Step 4: Create a function to check intersection with Texas polygon\n",
+        "def intersects_texas(texas_polygon, other_polygon):\n",
+        "    return texas_polygon.intersects(other_polygon)\n",
+        "\n",
+        "# Step 5: Combine all Texas ZIP codes into a single polygon\n",
+        "texas_polygon = unary_union(zips_texas_centroids.geometry)\n",
+        "\n",
+        "# Step 6: Apply the intersection function to find ZIP codes that are in bordering states\n",
+        "zips_texas_borderstates_centroids['borders_texas'] = zips_texas_borderstates_centroids.geometry.apply(\n",
+        "    lambda geom: intersects_texas(texas_polygon, geom)\n",
+        ")\n",
+        "\n",
+        "# Count unique ZIP codes in subsets\n",
+        "unique_texas_zips = zips_texas_centroids['ZCTA5'].nunique()\n",
+        "unique_bordering_zips = zips_texas_borderstates_centroids[zips_texas_borderstates_centroids['borders_texas']]['ZCTA5'].nunique()\n",
+        "\n",
+        "print(f\"Unique Texas ZIP codes: {unique_texas_zips}\")\n",
+        "print(f\"Unique ZIP codes in Texas and bordering states: {unique_bordering_zips}\")\n",
+        "```\n",
+        "\n",
+        "\n",
         "3. \n",
         "4. \n",
         "    a.\n",
@@ -617,7 +787,7 @@
         "\n",
         "## Reflecting on the exercise (10 pts) "
       ],
-      "id": "42fd3dea"
+      "id": "226c10de"
     }
   ],
   "metadata": {

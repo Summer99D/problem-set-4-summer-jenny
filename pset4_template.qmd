@@ -345,11 +345,11 @@ print("\nHospitals suspected of merger:")
 print(merge_hospitals_df)
 
 # Number of properly closed hospitals
-num_properly_closed = properly_closed_hospitals_df.shape['0']
+num_properly_closed = properly_closed_hospitals_df.shape[0]
 print(f"Number of properly closed hospitals: {num_properly_closed}")
 
 # Number of suspected mergers
-num_suspected_mergers = merge_hospitals_df.shape['0']
+num_suspected_mergers = merge_hospitals_df.shape[0]
 print(f"Number of suspected mergers: {num_suspected_mergers}")
 ```
 
@@ -426,7 +426,7 @@ There are no potential merged hospitals!
 sorted_properly_closed_hospitals = properly_closed_hospitals_df.sort_values(by='FAC_NAME').head(10)
 
 # Display the sorted list
-print("First 10 corrected hospital closures sorted by name:")
+print("First 10 hospital closures sorted by name:")
 print(sorted_properly_closed_hospitals)
 ```
 
@@ -459,24 +459,276 @@ else:
 
 # Step 2: Filter for Texas ZIP codes (starting with 75, 76, 77, 78, or 79)
 texas_zip_shapes = zip_shapes[zip_shapes[zip_column].astype(str).str.startswith(('75', '76', '77', '78', '79'))]
+print(texas_zip_shapes.head(10))
 
 ```
 
 2. 
 
+```{python}
+#pos2016 
+pos2016['ZIP_CD'] = pos2016['ZIP_CD'].astype(str).str.split('.').str[0]
+pos2016['ZIP_CD'] = pos2016['ZIP_CD'].str.zfill(5)
+texas_hospitals_2016 = pos2016[pos2016['ZIP_CD'].str.startswith(('75', '76', '77', '78', '79')) | (pos2016['ZIP_CD'] == '733')]
+
+print(texas_hospitals_2016.head())
+print("Number of Texas hospital records in 2016:", texas_hospitals_2016.shape[0])
+```
+
+```{python}
+#counting the number of hospitals per ZIP code:
+hospitals_per_zip = texas_hospitals_2016.groupby('ZIP_CD').size().reset_index(name='hospital_count')
+```
+
+```{python}
+#merging for chloropleth mapping
+texas_zip_shapes.loc[:, 'ZCTA5'] = texas_zip_shapes['ZCTA5'].astype(str)
+hospitals_per_zip['ZIP_CD'] = hospitals_per_zip['ZIP_CD'].astype(str)
+
+#FIXING ZIP TYPES
+# Convert ZIP_CD to integer, then to string with zero-padding to ensure 5-digit format
+hospitals_per_zip['ZIP_CD'] = hospitals_per_zip['ZIP_CD'].astype(float).astype(int).astype(str).str.zfill(5)
+
+# Re-check the formatting
+print("Formatted ZIP codes in hospitals_per_zip:", hospitals_per_zip['ZIP_CD'].unique()[:10])
+
+# Now, re-run the merge
+texas_zip_shapes = texas_zip_shapes.merge(hospitals_per_zip, left_on='ZCTA5', right_on='ZIP_CD', how='left')
+
+# Fill NaN values in 'hospital_count' with 0 for ZIP codes with no hospitals
+texas_zip_shapes['hospital_count'] = texas_zip_shapes['hospital_count'].fillna(0)
+
+# Verify the number of common ZIP codes and non-zero hospital counts
+print("Number of ZIP codes with hospital_count as 0:", (texas_zip_shapes['hospital_count'] == 0).sum())
+print("Total ZIP codes in Texas:", texas_zip_shapes.shape[0])
+print(texas_zip_shapes[['ZCTA5', 'hospital_count']].head(10))
+
+```
+
+```{python}
+# Adjust the merge by specifying suffixes to handle duplicate columns
+texas_zip_shapes = texas_zip_shapes.merge(
+    hospitals_per_zip, 
+    left_on='ZCTA5', 
+    right_on='ZIP_CD', 
+    how='left', 
+    suffixes=('', '_y')  # Prevents '_x' and '_y' conflicts
+)
+
+# Drop any unnecessary duplicate columns that may arise
+texas_zip_shapes = texas_zip_shapes.drop(columns=['ZIP_CD_y'], errors='ignore')
+
+# Fill NaN values in 'hospital_count' with 0 for ZIP codes with no hospitals
+texas_zip_shapes['hospital_count'] = texas_zip_shapes['hospital_count'].fillna(0)
+
+# Verify the result
+print("Number of ZIP codes with hospital_count as 0:", (texas_zip_shapes['hospital_count'] == 0).sum())
+print("Total ZIP codes in Texas:", texas_zip_shapes.shape[0])
+print(texas_zip_shapes[['ZCTA5', 'hospital_count']].head(10))
+
+
+```
+
+```{python}
+
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(1, 1, figsize=(12, 10))
+texas_zip_shapes.plot(column='hospital_count', cmap='OrRd', linewidth=0.8, ax=ax, edgecolor='0.8', legend=True)
+ax.set_title("Number of Hospitals per ZIP Code in Texas (2016)")
+ax.set_axis_off()
+plt.show()
+
+```
+
 ## Calculate zip code’s distance to the nearest hospital (20 pts) (*)
 
 1. 
+
+```{python}
+#I will start by creating centeroids:
+zip_shapes['centroids']= zip_shapes.geometry.centroid
+#this will change the default geometry to centroids
+all_zip_centroid= zip_shapes.copy().set_geometry('centroids')
+print(all_zip_centroid.shape)
+print(all_zip_centroid.columns)
+print(all_zip_centroid.head(10))
+```
+
+GEO_ID: it is ta code to identify the grographic type: state, county, zipcode
+
+ZCTA5:it is 5 digit zip code tabulation area( zpproximation of postal codes)
+
+NAME: is the same as ZCTA5 only more user friendly. 
+
+LSDA: legal/statistical area description categorizing geo area type( state, county,zipcode(in this case our description is zip code ZCTA5))
+
+CENSUSAREA:The land area of the ZCTA in square miles as calculated by the Census Bureau. It measures the physical size of each area, excluding water bodies.
+
+
 2. 
+```{python}
+from shapely.ops import unary_union
+
+# Step 1: Filter for Texas ZIP codes (starting with 75, 76, 77, 78, or 79)
+zips_texas_centroids = all_zip_centroid[all_zip_centroid['ZCTA5'].str.startswith(('75', '76', '77', '78', '79'))]
+
+# Step 2: Filter for Texas and bordering states’ ZIP codes
+zips_texas_borderstates_centroids = all_zip_centroid[all_zip_centroid['ZCTA5'].str.startswith(
+    ('75', '76', '77', '78', '79', '70', '71', '72', '73', '74', '80', '81', '88', '87', '86')
+)]
+
+# Step 3: Count unique ZIP codes in each subset
+num_texas_zips = zips_texas_centroids['ZCTA5'].nunique()
+num_bordering_zips = zips_texas_borderstates_centroids['ZCTA5'].nunique()
+
+print(f"Number of unique Texas ZIP codes: {num_texas_zips}")
+print(f"Number of unique ZIP codes in Texas and bordering states: {num_bordering_zips}")
+
+# Step 4: Create a function to check intersection with Texas polygon
+def intersects_texas(texas_polygon, other_polygon):
+    return texas_polygon.intersects(other_polygon)
+
+# Step 5: Combine all Texas ZIP codes into a single polygon
+texas_polygon = unary_union(zips_texas_centroids.geometry)
+
+# Step 6: Apply the intersection function to find ZIP codes that are in bordering states
+zips_texas_borderstates_centroids['borders_texas'] = zips_texas_borderstates_centroids.geometry.apply(
+    lambda geom: intersects_texas(texas_polygon, geom)
+)
+
+# Count unique ZIP codes in subsets
+unique_texas_zips = zips_texas_centroids['ZCTA5'].nunique()
+unique_bordering_zips = zips_texas_borderstates_centroids[zips_texas_borderstates_centroids['borders_texas']]['ZCTA5'].nunique()
+
+print(f"Unique Texas ZIP codes: {unique_texas_zips}")
+print(f"Unique ZIP codes in Texas and bordering states: {unique_bordering_zips}")
+```
+
 3. 
+
+```{python}
+## the ZIP_CD column in our properly_closed_df is integer, I have to convert it!
+# Ensure ZIP_CD in hospitals_per_zip is converted to strings without decimals
+texas_hospitals_2016 = pos2016[pos2016['ZIP_CD'].str.startswith(('75', '76', '77', '78', '79')) | (pos2016['ZIP_CD'] == '733')]
+hospitals_per_zip = texas_hospitals_2016.groupby('ZIP_CD').size().reset_index(name='hospital_count')
+hospitals_per_zip['ZIP_CD'] = hospitals_per_zip['ZIP_CD'].astype(str).str.zfill(5)
+
+# Also ensure ZIP codes in zips_texas_borderstates_centroids are strings with zero-padding
+zips_texas_borderstates_centroids[zip_column] = zips_texas_borderstates_centroids[zip_column].astype(str).str.zfill(5)
+
+# Verify the cleaned ZIP_CD column
+print("Sample ZIP codes in hospitals_per_zip (should be string with zero-padding):")
+print(hospitals_per_zip['ZIP_CD'].head())
+
+print("Sample ZIP codes in zips_texas_borderstates_centroids (should be string with zero-padding):")
+print(zips_texas_borderstates_centroids[zip_column].head())
+
+# Proceed with merging and filtering
+zips_withhospital_centroids = zips_texas_borderstates_centroids.merge(
+    hospitals_per_zip,
+    left_on='ZCTA5',
+    right_on='ZIP_CD',
+    how='inner'
+)
+
+# Filter for ZIP codes with at least one hospital
+zips_withhospital_centroids = zips_withhospital_centroids[zips_withhospital_centroids['hospital_count'] > 0]
+
+# Display the final result and count unique ZIP codes
+print("zips_withhospital_centroids with at least 1 hospital:")
+print(zips_withhospital_centroids.head())
+num_unique_zip_codes = zips_withhospital_centroids[zip_column].nunique()
+print(f"Number of unique ZIP codes with at least 1 hospital in 2016: {num_unique_zip_codes}")
+```
+
+I inner merged on zip code but had osme problems because they did not match (zip code in geo file had decimals and had to be converted)
 4. 
+
+
     a.
+
+```{python}
+import numpy as np
+import time
+start_time_T= time.time()
+# Conversion factors
+LAT_TO_MILES = 69.0  # Approximate miles per degree latitude
+LON_TO_MILES = 55.0  # Approximate miles per degree longitude in Texas
+
+# Function to calculate approximate distance in miles between two points given in degrees
+def degree_to_miles_distance(point1, point2):
+    lat_diff = (point1.y - point2.y) * LAT_TO_MILES
+    lon_diff = (point1.x - point2.x) * LON_TO_MILES
+    return np.sqrt(lat_diff**2 + lon_diff**2)
+
+# I am subsetting the df with the first 10 
+Q4a_subset = zips_texas_centroids.head(10)
+# Step 2: Time the nearest distance calculation
+start_time = time.time()
+
+# Calculating the nearest distances for the subset
+Q4a_subset['nearest_hospital_distance'] = Q4a_subset['centroids'].apply(
+    lambda x: calculate_nearest_distance(x, zips_withhospital_centroids['centroids'])
+)
+
+end_time = time.time()
+
+# Step 3: Calculate time taken and estimate total time
+subset_duration = end_time - start_time
+total_zips_count = len(zips_texas_centroids)
+estimated_total_duration = (subset_duration / 10) * total_zips_count
+
+# Display the results
+print(f"Time taken for 10 ZIP codes: {subset_duration:.2f} seconds")
+print(f"Estimated time for entire dataset: {estimated_total_duration / 60:.2f} minutes")
+```
+
+It will take approximatelty 18 seconds to run the whole dataset!
     b.
-5. 
-    a.
-    b.
+
+look at part C where I calculated the actual distance. I have mentioned how much it will take to run the whole thing there. it is 36 seconds!
+
+
     c.
-    
+the unit is degree, which is approximately 69 miles or 111 km. here is convertion:
+
+```{python}
+start_time_T= time.time()
+
+# Apply this function to each Texas ZIP code centroid and find the nearest hospital distance
+zips_texas_centroids['nearest_hospital_distance_miles'] = zips_texas_centroids['centroids'].apply(
+    lambda centroid: min(
+        degree_to_miles_distance(centroid, hospital_centroid) 
+        for hospital_centroid in zips_withhospital_centroids['centroids']
+    )
+)
+
+# Calculate the average distance to the nearest hospital in miles
+average_distance_miles = zips_texas_centroids['nearest_hospital_distance_miles'].mean()
+end_time_T=time.time()
+total_time= end_time_T - start_time_T
+print(f"The average distance to the nearest hospital in Texas (in miles) is: {average_distance_miles:.2f}", "miles")
+print("the total time required to calculate the prompt above is", total_time, "seconds")
+```
+
+5. 
+
+```{python}
+
+# Step 1: Calculate the average distance to the nearest hospital in miles
+average_distance = zips_texas_centroids['nearest_hospital_distance_miles'].mean()
+print(f"Average distance to the nearest hospital for each ZIP code in Texas: {average_distance:.2f} miles")
+
+# Step 2: Map the nearest hospital distance for each ZIP code in Texas
+fig, ax = plt.subplots(1, 1, figsize=(12, 10))
+zips_texas_centroids.plot(column='nearest_hospital_distance_miles', cmap='YlOrRd', linewidth=0.8, ax=ax, edgecolor='0.8', legend=True)
+ax.set_title("Distance to the Nearest Hospital for Each ZIP Code in Texas (Miles)")
+ax.set_axis_off()
+plt.show()
+```
+
+
 ## Effects of closures on access in Texas (15 pts)
 
 1. 
@@ -485,3 +737,6 @@ texas_zip_shapes = zip_shapes[zip_shapes[zip_column].astype(str).str.startswith(
 4. 
 
 ## Reflecting on the exercise (10 pts) 
+
+
+2.the average distance to nearest hospital is 3.77 miles which means so many hospitals closed and therefore access to healthcare and urgent care has worsened. 
