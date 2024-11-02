@@ -739,4 +739,4 @@ plt.show()
 ## Reflecting on the exercise (10 pts) 
 
 
-2.the average distance to nearest hospital is 3.77 miles which means so many hospitals closed and therefore access to healthcare and urgent care has worsened. 
+2.the average distance to nearest hospital is 3.77 miles which means so many hospitals closed and therefore access to healthcare and urgent care has worsened. git
