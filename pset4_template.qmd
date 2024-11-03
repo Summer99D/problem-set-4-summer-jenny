@@ -69,7 +69,6 @@ import pandas as pd
 import geopandas as gpd
 import shapely
 import os
-import matplotlib.pyplot as plt
 os.chdir("/Users/samarnegahdar/Desktop/untitled folder/problem-set-4-summer-jenny")
 pos2016 = pd.read_csv("pos2016.csv")
 print(pos2016.head(10))
@@ -345,11 +344,11 @@ print("\nHospitals suspected of merger:")
 print(merge_hospitals_df)
 
 # Number of properly closed hospitals
-num_properly_closed = properly_closed_hospitals_df.shape[0]
+num_properly_closed = properly_closed_hospitals_df.shape['0']
 print(f"Number of properly closed hospitals: {num_properly_closed}")
 
 # Number of suspected mergers
-num_suspected_mergers = merge_hospitals_df.shape[0]
+num_suspected_mergers = merge_hospitals_df.shape['0']
 print(f"Number of suspected mergers: {num_suspected_mergers}")
 ```
 
@@ -426,125 +425,21 @@ There are no potential merged hospitals!
 sorted_properly_closed_hospitals = properly_closed_hospitals_df.sort_values(by='FAC_NAME').head(10)
 
 # Display the sorted list
-print("First 10 hospital closures sorted by name:")
+print("First 10 corrected hospital closures sorted by name:")
 print(sorted_properly_closed_hospitals)
 ```
 
 ## Download Census zip code shapefile (10 pt) 
 
 1. 
-
-```{python}
-import geopandas as gpd
-import pandas as pd
-import matplotlib.pyplot as plt
-
-# Load shapefile and display available columns
-shapefile_path = "/Users/samarnegahdar/Desktop/untitled folder/problem-set-4-summer-jenny/gz_2010_us_860_00_500k.shp"
-
-try:
-    zip_shapes = gpd.read_file(shapefile_path)
-    print("Shapefile loaded successfully.")
-    print("Columns in shapefile:", zip_shapes.columns)
-except Exception as e:
-    print("Error loading shapefile:", e)
-
-# Ensure column names and check if 'ZCTA5CE10' exists or an equivalent column
-if 'ZCTA5CE10' in zip_shapes.columns:
-    zip_column = 'ZCTA5CE10'
-elif 'ZCTA5' in zip_shapes.columns:
-    zip_column = 'ZCTA5'
-else:
-    print("ZIP code column not found. Available columns:", zip_shapes.columns)
-
-# Step 2: Filter for Texas ZIP codes (starting with 75, 76, 77, 78, or 79)
-texas_zip_shapes = zip_shapes[zip_shapes[zip_column].astype(str).str.startswith(('75', '76', '77', '78', '79'))]
-print(texas_zip_shapes.head(10))
-
-```
-
+    a.
+    b. 
 2. 
-
-```{python}
-#pos2016 
-pos2016['ZIP_CD'] = pos2016['ZIP_CD'].astype(str).str.split('.').str[0]
-pos2016['ZIP_CD'] = pos2016['ZIP_CD'].str.zfill(5)
-texas_hospitals_2016 = pos2016[pos2016['ZIP_CD'].str.startswith(('75', '76', '77', '78', '79')) | (pos2016['ZIP_CD'] == '733')]
-
-print(texas_hospitals_2016.head())
-print("Number of Texas hospital records in 2016:", texas_hospitals_2016.shape[0])
-```
-
-```{python}
-#counting the number of hospitals per ZIP code:
-hospitals_per_zip = texas_hospitals_2016.groupby('ZIP_CD').size().reset_index(name='hospital_count')
-```
-
-```{python}
-#merging for chloropleth mapping
-texas_zip_shapes.loc[:, 'ZCTA5'] = texas_zip_shapes['ZCTA5'].astype(str)
-hospitals_per_zip['ZIP_CD'] = hospitals_per_zip['ZIP_CD'].astype(str)
-
-#FIXING ZIP TYPES
-# Convert ZIP_CD to integer, then to string with zero-padding to ensure 5-digit format
-hospitals_per_zip['ZIP_CD'] = hospitals_per_zip['ZIP_CD'].astype(float).astype(int).astype(str).str.zfill(5)
-
-# Re-check the formatting
-print("Formatted ZIP codes in hospitals_per_zip:", hospitals_per_zip['ZIP_CD'].unique()[:10])
-
-# Now, re-run the merge
-texas_zip_shapes = texas_zip_shapes.merge(hospitals_per_zip, left_on='ZCTA5', right_on='ZIP_CD', how='left')
-
-# Fill NaN values in 'hospital_count' with 0 for ZIP codes with no hospitals
-texas_zip_shapes['hospital_count'] = texas_zip_shapes['hospital_count'].fillna(0)
-
-# Verify the number of common ZIP codes and non-zero hospital counts
-print("Number of ZIP codes with hospital_count as 0:", (texas_zip_shapes['hospital_count'] == 0).sum())
-print("Total ZIP codes in Texas:", texas_zip_shapes.shape[0])
-print(texas_zip_shapes[['ZCTA5', 'hospital_count']].head(10))
-
-```
-
-```{python}
-# Adjust the merge by specifying suffixes to handle duplicate columns
-texas_zip_shapes = texas_zip_shapes.merge(
-    hospitals_per_zip, 
-    left_on='ZCTA5', 
-    right_on='ZIP_CD', 
-    how='left', 
-    suffixes=('', '_y')  # Prevents '_x' and '_y' conflicts
-)
-
-# Drop any unnecessary duplicate columns that may arise
-texas_zip_shapes = texas_zip_shapes.drop(columns=['ZIP_CD_y'], errors='ignore')
-
-# Fill NaN values in 'hospital_count' with 0 for ZIP codes with no hospitals
-texas_zip_shapes['hospital_count'] = texas_zip_shapes['hospital_count'].fillna(0)
-
-# Verify the result
-print("Number of ZIP codes with hospital_count as 0:", (texas_zip_shapes['hospital_count'] == 0).sum())
-print("Total ZIP codes in Texas:", texas_zip_shapes.shape[0])
-print(texas_zip_shapes[['ZCTA5', 'hospital_count']].head(10))
-
-
-```
-
-```{python}
-
-import matplotlib.pyplot as plt
-
-fig, ax = plt.subplots(1, 1, figsize=(12, 10))
-texas_zip_shapes.plot(column='hospital_count', cmap='OrRd', linewidth=0.8, ax=ax, edgecolor='0.8', legend=True)
-ax.set_title("Number of Hospitals per ZIP Code in Texas (2016)")
-ax.set_axis_off()
-plt.show()
-
-```
 
 ## Calculate zip code’s distance to the nearest hospital (20 pts) (*)
 
-1. 
 
+1. 
 ```{python}
 #I will start by creating centeroids:
 zip_shapes['centroids']= zip_shapes.geometry.centroid
@@ -557,7 +452,7 @@ print(all_zip_centroid.head(10))
 
 GEO_ID: it is ta code to identify the grographic type: state, county, zipcode
 
-ZCTA5:it is 5 digit zip code tabulation area( zpproximation of postal codes)
+ZCTA5:it is 5 digit zip code tabulation area(approximation of postal codes)
 
 NAME: is the same as ZCTA5 only more user friendly. 
 
@@ -728,7 +623,7 @@ ax.set_axis_off()
 plt.show()
 ```
 
-
+    
 ## Effects of closures on access in Texas (15 pts)
 
 1. 
@@ -737,6 +632,3 @@ plt.show()
 4. 
 
 ## Reflecting on the exercise (10 pts) 
-
-
-2.the average distance to nearest hospital is 3.77 miles which means so many hospitals closed and therefore access to healthcare and urgent care has worsened. git
