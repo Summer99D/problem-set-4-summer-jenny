@@ -3,3 +3,5 @@
 
 # Ignore shapefiles
 *.shp
+.DS_Store
+.DS_Store
