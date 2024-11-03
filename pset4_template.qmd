@@ -21,7 +21,7 @@ include-before-body:
 "This submission is our work alone and complies with the 30538 integrity policy." Add your initials to indicate your agreement: **SN** **JZ**
 
  "I have uploaded the names of anyone else other than my partner and I worked with on the problem set **[here](https://docs.google.com/forms/d/185usrCREQaUbvAXpWhChkjghdGgmAZXA3lPWpXLLsts/edit)**"  (1 point)
-Late coins used this pset: \*\*1\*\* Late coins left after submission: \*\*\0\*\*
+Late coins used this pset: \*\*1 this pset\*\* Late coins left after submission: \*\*\0\*\*
 Knit your `ps4.qmd` to an PDF file to make `ps4.pdf`, 
     * The PDF should not be more than 25 pages. Use `head()` and re-size figures when appropriate. 
 (Partner 1): push  `ps4.qmd` and `ps4.pdf` to your github repo.
